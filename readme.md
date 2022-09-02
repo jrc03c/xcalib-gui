@@ -1,6 +1,8 @@
 # Intro
 
-`xcalib-gui` is a GUI for [`xcalib`](https://man.archlinux.org/man/xcalib.1.en). NOTE: Does not work with Wayland!
+`xcalib-gui` is a GUI for [`xcalib`](https://man.archlinux.org/man/xcalib.1.en). 
+
+> **NOTE:** Does not work with Wayland!
 
 # Usage
 
@@ -10,7 +12,6 @@ To install:
 git clone https://github.com/jrc03c/xcalib-gui
 cd xcalib-gui
 npm install
-npm link
 ```
 
 To use:
