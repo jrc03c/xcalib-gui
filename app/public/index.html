@@ -1,0 +1,336 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body,
+      *,
+      input,
+      button {
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+
+      body {
+        margin: 0 auto;
+        padding: 1em;
+        max-width: 768px;
+      }
+
+      h1 {
+        margin: 0 -0.5em 1em -0.5em;
+        padding: 0.5em;
+        background-color: black;
+        color: white;
+        border-radius: 4px;
+        font-size: 2em;
+      }
+
+      hr {
+        margin: 1em 0;
+        padding: 1px;
+        border: 0;
+        background-color: black;
+      }
+
+      select,
+      button,
+      input[type="submit"] {
+        padding: 0.25em 0.5em;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          margin: 0 auto;
+          padding: 1em;
+          max-width: calc(100% - 4em);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>xcalib gui</h1>
+
+    <div id="app">
+      <p>
+        <select v-model="chosenPreset">
+          <option disabled :value="null">Select a preset...</option>
+          <option v-for="preset in presets" :value="preset">
+            {{ preset.name }}
+          </option>
+        </select>
+      </p>
+
+      <form @submit.prevent="update">
+        <div>
+          <b>Invert:</b>
+          <input type="checkbox" v-model="settings.invert" />
+        </div>
+
+        <div>
+          <b>Set colors individually?</b>
+          <input
+            type="checkbox"
+            v-model="settings.shouldSetColorsIndividually" />
+        </div>
+
+        <hr />
+
+        <div v-if="!settings.shouldSetColorsIndividually">
+          <div>
+            <b>Gamma:</b>
+            <input
+              type="range"
+              v-model="settings.gamma"
+              min="0.1"
+              max="5.0"
+              step="0.1" />
+          </div>
+
+          <div>
+            <b>Brightness:</b>
+            <input
+              type="range"
+              v-model="settings.brightness"
+              min="1.0"
+              max="99.0"
+              step="1" />
+          </div>
+
+          <div>
+            <b>Contrast:</b>
+            <input
+              type="range"
+              v-model="settings.contrast"
+              min="1.0"
+              max="99.0"
+              step="1" />
+          </div>
+        </div>
+
+        <div v-if="settings.shouldSetColorsIndividually">
+          <div v-for="color in ['red', 'green', 'blue']">
+            <div :style="'color:' + color">
+              <b>{{ color.capitalize() }}:</b>
+            </div>
+
+            <div>
+              Gamma:
+              <input
+                type="range"
+                v-model="settings.colors[color].gamma"
+                min="0.1"
+                max="5"
+                step="0.1" />
+            </div>
+
+            <div>
+              Brightness:
+              <input
+                type="range"
+                v-model="settings.colors[color].brightness"
+                min="1"
+                max="99"
+                step="1" />
+            </div>
+
+            <div>
+              Contrast:
+              <input
+                type="range"
+                v-model="settings.colors[color].contrast"
+                min="1"
+                max="99"
+                step="1" />
+            </div>
+
+            <br />
+          </div>
+        </div>
+
+        <br />
+
+        <div>
+          <button @click.stop.prevent="clear">Reset</button>
+          <input type="submit" value="Apply" />
+        </div>
+      </form>
+    </div>
+
+    <script src="vue.min.js"></script>
+    <script>
+      String.prototype.capitalize = function () {
+        return (
+          this.substring(0, 1).toUpperCase() +
+          this.substring(1, this.length).toLowerCase()
+        )
+      }
+
+      async function postFetch(path, body) {
+        let response = await fetch(path, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        })
+
+        return await response.json()
+      }
+
+      let app = new Vue({
+        el: "#app",
+
+        data: {
+          chosenPreset: null,
+
+          settings: {
+            invert: false,
+            gamma: 1.0,
+            brightness: 1,
+            contrast: 99,
+            shouldSetColorsIndividually: true,
+
+            colors: {
+              red: {
+                gamma: 1.0,
+                brightness: 1,
+                contrast: 99,
+              },
+
+              green: {
+                gamma: 1.0,
+                brightness: 1,
+                contrast: 99,
+              },
+
+              blue: {
+                gamma: 1.0,
+                brightness: 1,
+                contrast: 99,
+              },
+            },
+          },
+
+          presets: [
+            {
+              name: "Slightly warm",
+              invert: false,
+              gamma: 1.0,
+              brightness: 1,
+              contrast: 99,
+              shouldSetColorsIndividually: true,
+
+              colors: {
+                red: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 99,
+                },
+
+                green: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 89,
+                },
+
+                blue: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 79,
+                },
+              },
+            },
+            {
+              name: "Warm",
+              invert: false,
+              gamma: 1.0,
+              brightness: 1,
+              contrast: 99,
+              shouldSetColorsIndividually: true,
+
+              colors: {
+                red: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 99,
+                },
+
+                green: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 79,
+                },
+
+                blue: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 59,
+                },
+              },
+            },
+            {
+              name: "Very warm",
+              invert: false,
+              gamma: 1.0,
+              brightness: 1,
+              contrast: 99,
+              shouldSetColorsIndividually: true,
+
+              colors: {
+                red: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 99,
+                },
+
+                green: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 59,
+                },
+
+                blue: {
+                  gamma: 1.0,
+                  brightness: 1,
+                  contrast: 19,
+                },
+              },
+            },
+          ],
+        },
+
+        watch: {
+          chosenPreset: function () {
+            const self = this
+            Vue.set(self, "settings", self.chosenPreset)
+            self.update()
+          },
+        },
+
+        methods: {
+          update: async function () {
+            let self = this
+            let success = await postFetch("/update", self.settings)
+            console.log(success)
+          },
+
+          clear: async function () {
+            let self = this
+            let success = await postFetch("/clear", {})
+            console.log(success)
+            window.location.reload()
+          },
+        },
+
+        async mounted() {
+          const self = this
+
+          try {
+            const response = await fetch("/load")
+            const settings = await response.json()
+            Vue.set(self, "settings", settings)
+          } catch (e) {}
+        },
+      })
+    </script>
+  </body>
+</html>
