@@ -2,7 +2,7 @@
 
 `xcalib-gui` is a GUI for [`xcalib`](https://man.archlinux.org/man/xcalib.1.en). 
 
-> **NOTE:** Does not work with Wayland!
+> **NOTE:** Doesn't seem to work with Wayland!
 
 # Usage
 
