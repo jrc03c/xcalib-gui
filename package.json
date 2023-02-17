@@ -6,5 +6,8 @@
   "scripts": {
     "start": "electron ."
   },
-  "author": "jrc03c"
+  "author": "jrc03c",
+  "dependencies": {
+    "electron": "^20.3.12"
+  }
 }
