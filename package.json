@@ -1,19 +1,19 @@
 {
-  "name": "xcalib-gui",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "electron ."
-  },
   "author": "jrc03c",
+  "bin": {
+    "xcalib-gui": "index.js"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "electron": "^20.3.12",
     "express": "^4.17.1",
     "vue": "^2.6.12"
   },
-  "bin": {
-    "xcalib-gui": "index.js"
-  }
+  "description": "",
+  "main": "index.js",
+  "name": "xcalib-gui",
+  "scripts": {
+    "start": "electron ."
+  },
+  "version": "0.0.1"
 }
